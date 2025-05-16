@@ -76,7 +76,7 @@ u64 mmu_alloc(mmu_t *mmu, i64 sz) {
     assert(mmu->alloc >= mmu->base);
     if (sz > 0 && mmu->alloc > TO_GUEST(mmu->host_alloc)) {
         if (mmap((void *)mmu->host_alloc, ROUNDUP(sz, page_size),
-                 PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0) == MAP_FAILED)
+                 PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0) == MAP_FAILED)
             fatal("mmap failed");
         mmu->host_alloc += ROUNDUP(sz, page_size);
     } else if (sz < 0 && ROUNDUP(mmu->alloc, page_size) < TO_GUEST(mmu->host_alloc)) {
